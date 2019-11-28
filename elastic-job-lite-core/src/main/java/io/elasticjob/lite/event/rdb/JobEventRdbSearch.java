@@ -59,7 +59,7 @@ public final class JobEventRdbSearch {
             Lists.newArrayList("id", "hostname", "ip", "task_id", "job_name", "execution_source", "sharding_item", "start_time", "complete_time", "is_success", "failure_cause");
     
     private static final List<String> FIELDS_JOB_STATUS_TRACE_LOG = 
-            Lists.newArrayList("id", "job_name", "original_task_id", "task_id", "slave_id", "source", "execution_type", "sharding_item", "state", "message", "creation_time");
+            Lists.newArrayList("id", "job_name", "original_task_id", "task_id", "slave_id", "execution_source", "execution_type", "sharding_item", "state", "message", "creation_time");
     
     private final DataSource dataSource;
     

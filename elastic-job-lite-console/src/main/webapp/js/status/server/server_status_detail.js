@@ -9,7 +9,7 @@ $(function() {
 function renderJobs() {
     var ip = $("#server-ip").text();
     $("#server-jobs-tbl").bootstrapTable({
-        url: "/api/servers/" + ip + "/jobs",
+        url: "api/servers/" + ip + "/jobs",
         cache: false,
         search: true,
         showRefresh: true,
@@ -60,7 +60,7 @@ function bindDisableButton() {
     $(document).off("click", "button[operation='disable-server-job'][data-toggle!='modal']");
     $(document).on("click", "button[operation='disable-server-job'][data-toggle!='modal']", function(event) {
         $.ajax({
-            url: "/api/servers/" + $("#server-ip").text() + "/jobs/" + $(event.currentTarget).attr("job-name") + "/disable",
+            url: "api/servers/" + $("#server-ip").text() + "/jobs/" + $(event.currentTarget).attr("job-name") + "/disable",
             type: "POST",
             success: function() {
                 $("#server-jobs-tbl").bootstrapTable("refresh");
@@ -74,7 +74,7 @@ function bindEnableButton() {
     $(document).off("click", "button[operation='enable-server-job'][data-toggle!='modal']");
     $(document).on("click", "button[operation='enable-server-job'][data-toggle!='modal']", function(event) {
         $.ajax({
-            url: "/api/servers/" + $("#server-ip").text() + "/jobs/" + $(event.currentTarget).attr("job-name") + "/disable",
+            url: "api/servers/" + $("#server-ip").text() + "/jobs/" + $(event.currentTarget).attr("job-name") + "/disable",
             type: "DELETE",
             success: function() {
                 $("#server-jobs-tbl").bootstrapTable("refresh");
@@ -93,7 +93,7 @@ function bindShutdownButton() {
         $(document).off("click", "#confirm-btn");
         $(document).on("click", "#confirm-btn", function() {
             $.ajax({
-                url: "/api/servers/" + serverIp + "/jobs/" + jobName + "/shutdown",
+                url: "api/servers/" + serverIp + "/jobs/" + jobName + "/shutdown",
                 type: "POST",
                 success: function () {
                     $("#confirm-dialog").modal("hide");
@@ -115,7 +115,7 @@ function bindRemoveButton() {
         $(document).off("click", "#confirm-btn");
         $(document).on("click", "#confirm-btn", function() {
             $.ajax({
-                url: "/api/servers/" + serverIp + "/jobs/" + jobName,
+                url: "api/servers/" + serverIp + "/jobs/" + jobName,
                 type: "DELETE",
                 success: function () {
                     $("#confirm-dialog").modal("hide");

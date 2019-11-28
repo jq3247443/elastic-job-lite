@@ -16,7 +16,7 @@ function getJobParams() {
     var jobName = $("#job-overviews-name").text();
     var jobParams;
     $.ajax({
-        url: "/api/jobs/config/" + jobName,
+        url: "api/jobs/config/" + jobName,
         async: false,
         success: function(data) {
             jobParams = data;
@@ -72,7 +72,7 @@ function bindSubmitJobSettingsForm() {
 
 function submitAjax(postJson) {
     $.ajax({
-        url: "/api/jobs/config",
+        url: "api/jobs/config",
         type: "PUT",
         data: JSON.stringify(postJson),
         contentType: "application/json",

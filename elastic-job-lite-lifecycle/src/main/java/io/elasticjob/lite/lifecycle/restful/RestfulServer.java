@@ -17,10 +17,7 @@
 
 package io.elasticjob.lite.lifecycle.restful;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
-import com.sun.jersey.api.core.PackagesResourceConfig;
-import com.sun.jersey.spi.container.servlet.ServletContainer;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -28,6 +25,7 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
+import org.glassfish.jersey.servlet.ServletContainer;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
@@ -104,8 +102,8 @@ public final class RestfulServer {
     
     private ServletHolder getServletHolder(final String packages) {
         ServletHolder result = new ServletHolder(ServletContainer.class);
-        result.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, Joiner.on(",").join(RestfulServer.class.getPackage().getName(), packages));
-        result.setInitParameter("com.sun.jersey.config.property.resourceConfigClass", PackagesResourceConfig.class.getName());
+//        result.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, Joiner.on(",").join(RestfulServer.class.getPackage().getName(), packages));
+//        result.setInitParameter("com.sun.jersey.config.property.resourceConfigClass", PackagesResourceConfig.class.getName());
         result.setInitParameter("com.sun.jersey.api.json.POJOMappingFeature", Boolean.TRUE.toString());
         result.setInitParameter("resteasy.scan.providers", Boolean.TRUE.toString());
         result.setInitParameter("resteasy.use.builtin.providers", Boolean.FALSE.toString());

@@ -71,7 +71,7 @@ public final class WwwAuthFilter implements Filter {
         Properties props = new Properties();
         URL classLoaderURL = Thread.currentThread().getContextClassLoader().getResource("");
         if (null != classLoaderURL) {
-            String configFilePath = Joiner.on(FILE_SEPARATOR).join(classLoaderURL.getPath(), "conf", "auth.properties");
+            String configFilePath = Joiner.on(FILE_SEPARATOR).join(classLoaderURL.getPath(), "", "auth.properties");
             try {
                 props.load(new FileInputStream(configFilePath));
             } catch (final IOException ex) {
@@ -89,6 +89,13 @@ public final class WwwAuthFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String authorization = httpRequest.getHeader("authorization");
+        log.info("auth filter {}", authorization);
+        log.info("auth filter def name {}, passwd {}", rootUsername, rootPassword);
+        //默认登入用户root
+        if (authorization == null || authorization.length() == 0) {
+            authorization = "cm9vdDpyb290";
+        }
+
         if (null != authorization && authorization.length() > AUTH_PREFIX.length()) {
             authorization = authorization.substring(AUTH_PREFIX.length(), authorization.length());
             if ((rootUsername + ":" + rootPassword).equals(new String(Base64.decodeBase64(authorization)))) {

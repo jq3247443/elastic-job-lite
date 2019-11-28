@@ -46,4 +46,5 @@ public final class JobEventRdbListener extends JobEventRdbIdentity implements Jo
     public void listen(final JobStatusTraceEvent jobStatusTraceEvent) {
         repository.addJobStatusTraceEvent(jobStatusTraceEvent);
     }
+
 }
