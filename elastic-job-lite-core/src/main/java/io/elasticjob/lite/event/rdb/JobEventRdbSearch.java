@@ -56,10 +56,10 @@ public final class JobEventRdbSearch {
     private static final String TABLE_JOB_STATUS_TRACE_LOG = "JOB_STATUS_TRACE_LOG";
     
     private static final List<String> FIELDS_JOB_EXECUTION_LOG = 
-            Lists.newArrayList("id", "hostname", "ip", "task_id", "job_name", "execution_source", "sharding_item", "start_time", "complete_time", "is_success", "failure_cause");
+            Lists.newArrayList("id", "hostname", "ip", "task_id", "job_name", "execution_source", "sharding_item", "start_time", "complete_time", "is_success", "failure_cause", "ROWNUM AS rowno");
     
     private static final List<String> FIELDS_JOB_STATUS_TRACE_LOG = 
-            Lists.newArrayList("id", "job_name", "original_task_id", "task_id", "slave_id", "execution_source", "execution_type", "sharding_item", "state", "message", "creation_time");
+            Lists.newArrayList("id", "job_name", "original_task_id", "task_id", "slave_id", "execution_source", "execution_type", "sharding_item", "state", "message", "creation_time", "ROWNUM AS rowno");
     
     private final DataSource dataSource;
     
@@ -156,12 +156,13 @@ public final class JobEventRdbSearch {
     }
     
     private String buildDataSql(final String tableName, final Collection<String> tableFields, final Condition condition) {
-        StringBuilder sqlBuilder = new StringBuilder();
+        StringBuilder sqlBuilder = new StringBuilder("select * from (");
         String selectSql = buildSelect(tableName, tableFields);
         String whereSql = buildWhere(tableName, tableFields, condition);
         String orderSql = buildOrder(tableFields, condition.getSort(), condition.getOrder());
+        String endSql = " )";
         String limitSql = buildLimit(condition.getPage(), condition.getPerPage());
-        sqlBuilder.append(selectSql).append(whereSql).append(orderSql).append(limitSql);
+        sqlBuilder.append(selectSql).append(endSql).append(whereSql).append(orderSql).append(limitSql);
         return sqlBuilder.toString();
     }
     
@@ -258,13 +259,15 @@ public final class JobEventRdbSearch {
         }
         return sqlBuilder.toString();
     }
-    
+
     private String buildLimit(final int page, final int perPage) {
-        StringBuilder sqlBuilder = new StringBuilder();
+        StringBuilder sqlBuilder = new StringBuilder(" and ");
         if (page > 0 && perPage > 0) {
-            sqlBuilder.append(" LIMIT ").append((page - 1) * perPage).append(",").append(perPage);
+//            sqlBuilder.append(" LIMIT ").append((page - 1) * perPage).append(",").append(perPage);
+            sqlBuilder.append(" rowno > ").append((page - 1) * perPage).append(" and rowno < ").append(page  * perPage);
         } else {
-            sqlBuilder.append(" LIMIT ").append(Condition.DEFAULT_PAGE_SIZE);
+//            sqlBuilder.append(" LIMIT ").append(Condition.DEFAULT_PAGE_SIZE);
+            sqlBuilder.append(" rowno > ").append(Condition.DEFAULT_PAGE_SIZE);
         }
         return sqlBuilder.toString();
     }
